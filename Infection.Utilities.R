@@ -13,18 +13,19 @@ generate_inf_vec <- function(n, k) { # n is the size of the population; k is the
 }
 
 
-prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
+generate_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
 
   prob_list <- list(
-    n95 = 0.01,
-    non_med = 0.05,
+    n95_mask = 0.01,
+    non_med_mask = 0.05,
     no_mask = 0.1)
 
-    if length(VECTOR) != n:
+    prob_vec <- sample(c(0.01, 0.05, 0.1), size = n, replace = TRUE, prob = mask_fraction)
+    print(prob_vec)
+    if (length(prob_vec) != n) {
       stop("Probability vector does not equal length of total population")
-
+    }
 
     return()
 }
-
-generate_inf_vec(12, 4)
+generate_prob_vec(12)
