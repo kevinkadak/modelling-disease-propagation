@@ -14,6 +14,8 @@ generate_inf_vec <- function(n, k) { # n is the size of the population; k is the
 
 
 generate_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
+  n <- as.integer(n)
+  if (1 - sum(mask_fraction) > 1e-10 ) {stop("ERROR: Sum of mask fraction vector must be = 1 to the 10th decimal place")} # If the sum of the fractions in the vector does not equal 1 (ie. 100%), output error message
 
   prob_list <- list(
     n95_mask = 0.01,
@@ -21,11 +23,22 @@ generate_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
     no_mask = 0.1)
 
     prob_vec <- sample(c(0.01, 0.05, 0.1), size = n, replace = TRUE, prob = mask_fraction)
-    print(prob_vec)
-    if (length(prob_vec) != n) {
-      stop("Probability vector does not equal length of total population")
-    }
+    #if (length(prob_vec) != n) {stop("Probability vector does not equal length of total population")}
 
-    return()
+    return(prob_vec)
 }
+
+generate_interaction_matrix <- function(n){
+  inter_matrix <- matrix(sample(c(1, 0), replace=TRUE, size=n), nrow = n, ncol = n)
+  diag(inter_matrix) <- 0
+  print(inter_matrix)
+  #A[lower.tri(A)] <- t(A)[lower.tri(A)]
+
+}
+
+#print (A[lower.tri(A)] <- t(A)[lower.tri(A)])
+
+
 generate_prob_vec(12)
+
+generate_interaction_matrix(12)
