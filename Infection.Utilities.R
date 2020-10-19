@@ -29,15 +29,11 @@ generate_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
 }
 
 generate_interaction_matrix <- function(n){
-  inter_matrix <- matrix(sample(c(1, 0), replace=TRUE, size=n), nrow = n, ncol = n)
-  diag(inter_matrix) <- 0
-  print(inter_matrix)
-  #A[lower.tri(A)] <- t(A)[lower.tri(A)]
-
+  inter_matrix <- matrix(sample(c(1, 0), replace=TRUE, size = n**2), nrow = n, ncol = n) # Render an n*n-sized matrix, with off-diagonal values equally likely to be either 1 or 0
+  diag(inter_matrix) <- 0 # Convert all diagnoal items of the matrix (instances where equal row-column index coordinates) to values of 0
+  inter_matrix[lower.tri(inter_matrix)] <- t(inter_matrix)[lower.tri(inter_matrix)] # Transpose the lower half of the matrix on the upper half to make it symmetrical
+  return(inter_matrix)
 }
-
-#print (A[lower.tri(A)] <- t(A)[lower.tri(A)])
-
 
 generate_prob_vec(12)
 
