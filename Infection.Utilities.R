@@ -49,11 +49,18 @@ per2per_interactions <- function (one, two, three) {
   for (xi_row in 1:nrow(three)) { # Iterate through each row item of the interaction matrix
     t1 <- three[xi_row,]
     t2 <- one * t1
+    t3 <- t2 * two
+    t4 <- sample(c(1, 0), size = length(t3), replace = TRUE, prob = t3)
+    #if (sum(t4) != 0:
+    #  'xi is infected'
     print (t2)
     print("asdasd")
+    print(t3)
+    print("xxzczxc")
+    print(t4)
+    print("tttttt")
     for (xj_col in 1:ncol(three)) { # Within the above row iteration, iterate through each column item
-      print(three[xi_row, xj_col])
-      print("")
+      #print(three[xi_row, xj_col])
     }
   }
 }
