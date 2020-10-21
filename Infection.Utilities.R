@@ -1,7 +1,7 @@
 #Infection.Utilities.R
 #Kevin Kadak (1007522888)
 
-generate_inf_vec <- function(n, k) { # n is the size of the population; k is the number of initially-infected people
+generate_inf_vec <- function(n, k) { # n is the size of the population; k is the number of initially-infected people within it
   n <- as.integer(n) # Length of vector
   k <- as.integer(k) # Number of infected people within total vector set
 
@@ -29,12 +29,34 @@ generate_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
 }
 
 generate_interaction_matrix <- function(n){
-  inter_matrix <- matrix(sample(c(1, 0), replace=TRUE, size = n**2), nrow = n, ncol = n) # Render an n*n-sized matrix, with off-diagonal values equally likely to be either 1 or 0
+  inter_matrix <- matrix(sample(c(1, 0), replace = TRUE, size = n**2), nrow = n, ncol = n) # Render an n*n-sized matrix, with off-diagonal values equally likely to be either 1 or 0
   diag(inter_matrix) <- 0 # Convert all diagnoal items of the matrix (instances where equal row-column index coordinates) to values of 0
   inter_matrix[lower.tri(inter_matrix)] <- t(inter_matrix)[lower.tri(inter_matrix)] # Transpose the lower half of the matrix on the upper half to make it symmetrical
   return(inter_matrix)
 }
 
-generate_prob_vec(12)
+one <- generate_inf_vec(12, 4)
+two <- generate_prob_vec(12)
+three <- generate_interaction_matrix(12)
 
-generate_interaction_matrix(12)
+print (one)
+print (two)
+print (three)
+
+
+
+per2per_interactions <- function (one, two, three) {
+  for (xi_row in 1:nrow(three)) { # Iterate through each row item of the interaction matrix
+    t1 <- three[xi_row,]
+    t2 <- one * t1
+    print (t2)
+    print("asdasd")
+    for (xj_col in 1:ncol(three)) { # Within the above row iteration, iterate through each column item
+      print(three[xi_row, xj_col])
+      print("")
+    }
+  }
+}
+
+
+per2per_interactions (one, two, three)
