@@ -15,7 +15,7 @@ generate_inf_vec <- function(n, k) { # n is the size of the population; k is the
 
 generate_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
   n <- as.integer(n)
-  if (1 - sum(mask_fraction) > 1e-10 ) {stop("ERROR: Sum of mask fraction vector must be = 1 to the 10th decimal place")} # If the sum of the fractions in the vector does not equal 1 (ie. 100%), output error message
+  if (1 - sum(mask_fraction) > 1e-10 ) {stop("ERROR: Sum of mask fraction vector must total to equal 1.")} # If the sum of the fractions in the vector does not equal 1 (ie. 100%), output error message
 
   prob_list <- list(
     n95_mask = 0.01,
@@ -50,18 +50,25 @@ per2per_interactions <- function (one, two, three) {
     t1 <- three[xi_row,]
     t2 <- one * t1
     t3 <- t2 * two
-    t4 <- sample(c(1, 0), size = length(t3), replace = TRUE, prob = t3)
-    #if (sum(t4) != 0:
-    #  'xi is infected'
-    print (t2)
-    print("asdasd")
-    print(t3)
-    print("xxzczxc")
+
+    t3_sauce <- t3[t3 != 0]
+    print(t3_sauce)
+    t4_holder <- c()
+    for (enounter in t3_sauce) {
+      t4 <- sample(c(1, 0), size = length(t3_sauce), replace = TRUE, prob = c(enounter, 1 - enounter))
+      append(t4_holder, t4)
+      # FIND A WAY TO USE APPLY HERE MOST LIKELY
     print(t4)
-    print("tttttt")
-    for (xj_col in 1:ncol(three)) { # Within the above row iteration, iterate through each column item
-      #print(three[xi_row, xj_col])
+    print('stop it')
     }
+    if (sum(t4) != 0) {
+      xi_inf_status <- TRUE
+    } else {
+      xi_inf_status <- FALSE
+    }
+    #for (xj_col in 1:ncol(three)) { # Within the above row iteration, iterate through each column item
+    #  print(three[xi_row, xj_col])
+    #}
   }
 }
 
