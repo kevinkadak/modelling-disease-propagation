@@ -39,33 +39,37 @@ one <- generate_inf_vec(12, 4)
 two <- generate_prob_vec(12)
 three <- generate_interaction_matrix(12)
 
-print (one)
-print (two)
-print (three)
+
 
 
 
 per2per_interactions <- function (one, two, three) {
   for (xi_row in 1:nrow(three)) { # Iterate through each row item of the interaction matrix
-    t1 <- three[xi_row,]
-    t2 <- one * t1
-    t3 <- t2 * two
+    print (one)
+    print (two)
+    print (three)
 
-    t3_sauce <- t3[t3 != 0]
-    print(t3_sauce)
-    t4_holder <- c()
-    for (enounter in t3_sauce) {
-      t4 <- sample(c(1, 0), size = length(t3_sauce), replace = TRUE, prob = c(enounter, 1 - enounter))
-      append(t4_holder, t4)
+    xixj_interactions <- three[xi_row,]
+    cat("xixj_interactions: ", xixj_interactions, "\n")
+    infected_xj <- one * xixj_interactions
+    cat("infected_xj: ", infected_xj, "\n")
+    prob_transmission <- infected_xj *   two
+    cat("prob_transmission: ", prob_transmission, "\n")
+
+    filtered_prob_transmission <- prob_transmission[prob_transmission != 0] # Filter probability of transmission vector into only xixj interactions (where infection to xi is possible)
+    cat("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
+    deter_transmission_vec <- c()
+    for (enounter in filtered_prob_transmission) { # Iterate through elements of the probability of transmission vector with xj individual(s)
+      deter_transmission <- sample(c(1, 0), size = length(filtered_prob_transmission), replace = TRUE, prob = c(enounter, 1 - enounter))
+      deter_transmission_vec <- append(deter_transmission_vec, deter_transmission)
       # FIND A WAY TO USE APPLY HERE MOST LIKELY
-    print(t4)
-    print('stop it')
     }
-    if (sum(t4) != 0) {
-      xi_inf_status <- TRUE
-    } else {
-      xi_inf_status <- FALSE
-    }
+    
+    cat("deter_transmission_vec: ", deter_transmission_vec, "\n")
+    if (sum(deter_transmission_vec) != 0) {xi_inf_status <- TRUE}
+    else {xi_inf_status <- FALSE}
+
+    cat("xi_inf_status: ", xi_inf_status, "\n")
     #for (xj_col in 1:ncol(three)) { # Within the above row iteration, iterate through each column item
     #  print(three[xi_row, xj_col])
     #}
