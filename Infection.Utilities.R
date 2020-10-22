@@ -28,7 +28,6 @@ inf_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
     mask_prob_list$non_med_mask,
     mask_prob_list$no_mask), size = n, replace = TRUE, prob = mask_fraction)
     #if (length(prob_vec) != n) {stop("Probability vector does not equal length of total population")}
-
     return(prob_vec)
 }
 
@@ -41,7 +40,7 @@ interaction_matrix <- function(n){
 }
 
 xi_to_xj_interactions <- function (inf_stat_vec, inf_prob_vec, inf_interaction_matrix) {
-  updated_inf_stat_vec <- c()
+  new_inf_stat_vec <- c()
   for (xi_row in 1:nrow(inf_interaction_matrix)) { # Iterate through each row item of the interaction matrix for person xi
     print (inf_stat_vec)
     print (inf_prob_vec)
@@ -76,7 +75,7 @@ xi_to_xj_interactions <- function (inf_stat_vec, inf_prob_vec, inf_interaction_m
     #  print(three[xi_row, xj_col])
     #}
   }
-  return(updated_inf_stat_vec)
+  return(new_inf_stat_vec) # Return a vector inidcating the number of infected people (xi) after interaction analysis
 }
 
 initial_inf_stat_vec <- inital_inf_stat_vec(12, 4)
@@ -84,14 +83,18 @@ inf_prob_vec <- inf_prob_vec(12)
 inf_interaction_matrix <- interaction_matrix(12)
 
 iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, num) { # 1e takes the initial vector, but will use the updated vector as it iterates
-  iterable_uisv <- xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
-  cat(iterable_uisv, '\n')
+  total_inf_vec <- c() # Initialize an empty vector to contain the total number of infected people
 
-  total_inf_vec <- c()
-  total_inf_vec <- append(total_inf_vec, sum(iterable_uisv))
+  iterable_isv <- xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix) # Iterable infection status vector that will be updated through 1:num
+  cat(first_run, '\n')
+  total_inf_vec <- append(total_inf_vec, sum(iterable_isv)) # Append sum of infected persons in the interaction matrix analysis sourcing the initial_inf_stat_vec
+
   print(total_inf_vec)
 
   for (inf_scenario in 1:num) {
+    xi_to_xj_interactions(iterable_isv, inf_prob_vec, inf_interaction_matrix)
+
+
     my_new_vec <- fn1d(my_new_vec)
 
 
@@ -109,7 +112,7 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interac
     #total_inf_vec <- append(total_inf_vec, sapply(iterable_uisv, sum))
   #print(total_inf_vec)
 #}
-  #if (length(total_inf_vec) != num + 1) {print(total_inf_vec)}
+  if (length(total_inf_vec) != num + 1) {cat("weird.", "length: ", length(total_inf_vec), total_inf_vec)}
 
   #return(total_inf_vec)
 }
