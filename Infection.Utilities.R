@@ -42,21 +42,21 @@ interaction_matrix <- function(n){
 xi_to_xj_interactions <- function (inf_stat_vec, inf_prob_vec, inf_interaction_matrix) {
   new_inf_stat_vec <- c()
   for (xi_row in 1:nrow(inf_interaction_matrix)) { # Iterate through each row item of the interaction matrix for person xi
-    print (inf_stat_vec)
-    print (inf_prob_vec)
-    print (inf_interaction_matrix)
+    #print (inf_stat_vec)
+    #print (inf_prob_vec)
+    #print (inf_interaction_matrix)
 
     xixj_interactions <- inf_interaction_matrix[xi_row,] # Vector of which xj persons that xi has interacted with
-    cat("xixj_interactions: ", xixj_interactions, "\n")
+    #cat("xixj_interactions: ", xixj_interactions, "\n")
 
     infected_xj <- inf_stat_vec * xixj_interactions # Vector of which xj persons in the xixj_interactions vector are infected, determined via w/ generate_inf_vec
-    cat("infected_xj: ", infected_xj, "\n")
+    #cat("infected_xj: ", infected_xj, "\n")
 
     prob_transmission <- infected_xj * (inf_prob_vec) # Among the infected xj person(s) in infected_xj, determine their probability of transmitting infection to xi (pi * pj)
-    cat("prob_transmission: ", prob_transmission, "\n")
+    #cat("prob_transmission: ", prob_transmission, "\n")
 
     filtered_prob_transmission <- prob_transmission[prob_transmission != 0] # Filter probability of transmission vector into only xj-infected interactions with xi
-    cat("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
+    #cat("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
 
     #deter_inf_transmission <- sapply(prob_transmission, sample(c(1, 0), size=1, replace=TRUE, prob=c(prob_transmission, 1 - prob_transmission)))
     deter_inf_transmission <- c()
@@ -65,12 +65,14 @@ xi_to_xj_interactions <- function (inf_stat_vec, inf_prob_vec, inf_interaction_m
       deter_inf_transmission <- append(deter_inf_transmission, deter_transmission)
     }
 
-    cat("deter_transmission_vec: ", deter_inf_transmission, "\n")
+    #cat("deter_transmission_vec: ", deter_inf_transmission, "\n")
     if (sum(deter_inf_transmission) != 0) {xi_inf_status <- 1} # If any of the infection values in determined transmission vector are not false, xi status = infected
     else {xi_inf_status <- 0}
-    updated_inf_stat_vec <- append(updated_inf_stat_vec, xi_inf_status)
+    new_inf_stat_vec <- append(new_inf_stat_vec, xi_inf_status)
 
-    cat("xi_inf_status: ", xi_inf_status, "\n")
+    #cat("xi_inf_status: ", xi_inf_status, "\n")
+
+
     #for (xj_col in 1:ncol(three)) { # Within the above row iteration, iterate through each column item
     #  print(three[xi_row, xj_col])
     #}
@@ -78,31 +80,66 @@ xi_to_xj_interactions <- function (inf_stat_vec, inf_prob_vec, inf_interaction_m
   return(new_inf_stat_vec) # Return a vector inidcating the number of infected people (xi) after interaction analysis
 }
 
-initial_inf_stat_vec <- inital_inf_stat_vec(12, 4)
+initial_inf_stat_vec <- inital_inf_stat_vec(12, 2)
 inf_prob_vec <- inf_prob_vec(12)
 inf_interaction_matrix <- interaction_matrix(12)
 
 iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, num) { # 1e takes the initial vector, but will use the updated vector as it iterates
   total_inf_vec <- c() # Initialize an empty vector to contain the total number of infected people
+  storage <- c()
 
-  iterable_isv <- xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix) # Iterable infection status vector that will be updated through 1:num
-  cat(first_run, '\n')
-  total_inf_vec <- append(total_inf_vec, sum(iterable_isv)) # Append sum of infected persons in the interaction matrix analysis sourcing the initial_inf_stat_vec
+  #iterable_isv <- xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
+  #for (i in 1:7) {
+  #  print(iterable_isv)
+   # Iterable infection status vector that will be updated through 1:num
+  #}
+  #cat("first run", iterable_isv, '\n')
+  #total_inf_vec <- c(total_inf_vec, sum(iterable_isv))
+  #total_inf_vec <- append(total_inf_vec, sum(iterable_isv)) # Append sum of infected persons in the interaction matrix analysis sourcing the initial_inf_stat_vec
+  #total_inf_vec <- append(storage, iterable_isv)
 
-  print(total_inf_vec)
+  for (inf_scenario in 1:num + 1) {
+    if (inf_scenario < 2) {
+      first_run <- xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
+      append(storage, first_run)
+      append(total_inf_vec, sum(storage))
 
-  for (inf_scenario in 1:num) {
-    xi_to_xj_interactions(iterable_isv, inf_prob_vec, inf_interaction_matrix)
+    } else {
+      updated_inf_stat_vec <- storage[length(storage)] #* initial_inf_stat_vec[initial_inf_stat_vec != storage[length(storage)]]
+      cat ('\n', 'updated_inf_stat_vec', updated_inf_stat_vec)
 
+      iterable_isv <- xi_to_xj_interactions(updated_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
+      total_inf_vec <- append(total_inf_vec, total_inf_vec[length(total_inf_vec)] + sum(iterable_isv))
 
-    my_new_vec <- fn1d(my_new_vec)
-
-
-    jj <- sum(xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix))
-    total_inf_vec <- append(total_inf_vec, jj)
-    #total_inf_vec <- append(total_inf_vec, sapply(xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix), FUN = sum))
+      cat(inf_scenario, " run", iterable_isv, '\n')
+    }
   }
-  print(total_inf_vec)
+
+  return (total_inf_vec)
+}
+  #print(total_inf_vec)
+
+  #for (inf_scenario in 1:num) {
+    #if (inf_scenario < 2) {
+    #  iterable_isv <- xi_to_xj_interactions(storage, inf_prob_vec, inf_interaction_matrix)
+    #  append(iterable_isv, storage)
+    #} else {
+    #  iterable_isv <- xi_to_xj_interactions(iterable_isv + storage[length(storage)], inf_prob_vec, inf_interaction_matrix)
+    #  total_inf_vec <- c(total_inf_vec, total_inf_vec[length(total_inf_vec)] + sum(iterable_isv))
+    #  cat(inf_scenario, " run", iterable_isv, '\n')
+    #}
+
+
+  #}
+    #my_new_vec <- fn1d(my_new_vec)
+
+
+    #jj <- sum(xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix))
+    #total_inf_vec <- append(total_inf_vec, jj)
+    #total_inf_vec <- append(total_inf_vec, sapply(xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix), FUN = sum))
+
+
+
 
   #for (inf_scenario in 1:num) {
     #jj <- sapply(iterable_uisv, sum)
@@ -112,12 +149,13 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interac
     #total_inf_vec <- append(total_inf_vec, sapply(iterable_uisv, sum))
   #print(total_inf_vec)
 #}
-  if (length(total_inf_vec) != num + 1) {cat("weird.", "length: ", length(total_inf_vec), total_inf_vec)}
+  #if (length(total_inf_vec) != num + 1) {cat("weird.", "length: ", length(total_inf_vec), total_inf_vec)}
 
   #return(total_inf_vec)
-}
 
 
 
-xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
-#iterate_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, 20)
+
+
+#xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
+iterate_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, 20)

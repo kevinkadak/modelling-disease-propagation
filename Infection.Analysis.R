@@ -1,3 +1,6 @@
+args <- commandArgs(trailingOnly = TRUE) # Argument passed from the command line, will be used to indicate masked status
+
+
 list(
 Masked = c(0.15, 0.7, 0.15),
 
@@ -6,6 +9,7 @@ Masked = c(0.15, 0.7, 0.15),
 
 if ("masked") {
   n = 500
+  list$args
   initial_pop <- inital_inf_stat_vec(n, 1)
   vec.mask <- c(...)
   'defences'
@@ -19,3 +23,6 @@ if ("masked") {
 
 question: our initial probability vector randomly samples between 1 and 0, which would usally lead to half the values being 1.
   in the examples, however,
+
+
+# What do you mean by don't chance the infection status vector from within the function
