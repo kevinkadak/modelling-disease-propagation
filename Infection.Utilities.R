@@ -40,33 +40,34 @@ two <- generate_prob_vec(12)
 three <- generate_interaction_matrix(12)
 
 
-
-
-
 per2per_interactions <- function (one, two, three) {
-  for (xi_row in 1:nrow(three)) { # Iterate through each row item of the interaction matrix
+  for (xi_row in 1:nrow(three)) { # Iterate through each row item of the interaction matrix for person xi
     print (one)
     print (two)
     print (three)
 
-    xixj_interactions <- three[xi_row,]
+    xixj_interactions <- three[xi_row,] # Vector of which xj persons that xi has interacted with
     cat("xixj_interactions: ", xixj_interactions, "\n")
-    infected_xj <- one * xixj_interactions
+
+    infected_xj <- one * xixj_interactions # Vector of which xj persons in the xixj_interactions vector are infected, determined via w/ generate_inf_vec
     cat("infected_xj: ", infected_xj, "\n")
-    prob_transmission <- infected_xj *   two
+
+    prob_transmission <- infected_xj * (two**2) # Among the infected xj person(s) in infected_xj, determine their probability of transmitting the infection (pi * pj)
     cat("prob_transmission: ", prob_transmission, "\n")
 
-    filtered_prob_transmission <- prob_transmission[prob_transmission != 0] # Filter probability of transmission vector into only xixj interactions (where infection to xi is possible)
+    filtered_prob_transmission <- prob_transmission[prob_transmission != 0] # Filter probability of transmission vector into only xj-infected interactions with xi
     cat("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
-    deter_transmission_vec <- c()
+
+    #deter_inf_transmission <- apply(filtered_prob_transmission, MARGIN = 2, FUN = filtered_prob_transmission(sample(c(1, 0), size = 1, replace = TRUE, prob = c(filtered_prob_transmission, 1 - filtered_prob_transmission))))
+    deter_inf_transmission <- c()
     for (enounter in filtered_prob_transmission) { # Iterate through elements of the probability of transmission vector with xj individual(s)
-      deter_transmission <- sample(c(1, 0), size = length(filtered_prob_transmission), replace = TRUE, prob = c(enounter, 1 - enounter))
-      deter_transmission_vec <- append(deter_transmission_vec, deter_transmission)
+      deter_transmission <- sample(c(1, 0), size = 1, replace = TRUE, prob = c(enounter, 1 - enounter))
+      deter_inf_transmission <- append(deter_inf_transmission, deter_transmission)
       # FIND A WAY TO USE APPLY HERE MOST LIKELY
     }
-    
-    cat("deter_transmission_vec: ", deter_transmission_vec, "\n")
-    if (sum(deter_transmission_vec) != 0) {xi_inf_status <- TRUE}
+
+    cat("deter_transmission_vec: ", deter_inf_transmission, "\n")
+    if (sum(deter_inf_transmission) != 0) {xi_inf_status <- TRUE} # If any of the values in the determined transmission vec are
     else {xi_inf_status <- FALSE}
 
     cat("xi_inf_status: ", xi_inf_status, "\n")
