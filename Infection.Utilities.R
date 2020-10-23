@@ -16,7 +16,9 @@ initial_inf_stat_vec <- function(n, k) { # n is the size of the population; k is
 # Generate probability of infection vector (fn1b)
 inf_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
   n <- as.integer(n)
-  if (1 - sum(mask_fraction) > 1e-10 ) {stop("Error: Sum of mask fraction vector must total to equal 1.")} # If the sum of the fractions in the vector does not equal 1 (ie. 100%), output error message
+  if (1 - sum(mask_fraction) > 1e-10 ) {
+    stop("Error: Sum of mask fraction vector must total to equal 1.") # If the sum of the fractions in the vector does not equal 1 (ie. 100%), output error
+  }
 
   mask_prob_list <- list(
     n95_mask = 0.01,
@@ -27,12 +29,13 @@ inf_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
     mask_prob_list$n95_mask,
     mask_prob_list$non_med_mask,
     mask_prob_list$no_mask), size = n, replace = TRUE, prob = mask_fraction)
-    #if (length(prob_vec) != n) {stop("Probability vector does not equal length of total population")}
+
   return(prob_vec)
 }
 
 # Generate interaction matrix (fn1c)
 interaction_matrix <- function(n) {
+  n <- as.integer(n)
   inter_matrix <- matrix(sample(c(1, 0), replace = TRUE, size = n**2), nrow = n, ncol = n) # Render an n*n-sized matrix, with off-diagonal values equally likely to be either 1 or 0
   diag(inter_matrix) <- 0 # Convert all diagnoal items of the matrix (instances where equal row-column index coordinates) to values of 0
   inter_matrix[lower.tri(inter_matrix)] <- t(inter_matrix)[lower.tri(inter_matrix)] # Transpose the lower half of the matrix on the upper half to make it symmetrical
@@ -42,34 +45,35 @@ interaction_matrix <- function(n) {
 
 # Generate person (xi) to person (xj) interactions (fn1d)
 xi_to_xj_interactions <- function (initial_inf_stat_vec, inf_prob_vec, interaction_matrix) {
-  new_inf_stat_vec <- c()
-  inter_mat <- interaction_matrix
-  inf_prob_vec <- inf_prob_vec
+  new_inf_stat_vec <- c() # Generate an empty vector onto which each infection status of xi can be appended
+  print (initial_inf_stat_vec)
+  print (inf_prob_vec)
+  #print (interaction_matrix)
 
-  for (xi_row in 1:nrow(inter_mat)) { # Iterate through each row item of the interaction matrix for person xi
-    #print (initial_inf_stat_vec)
-    #print (inf_prob_vec)
-    #print (interaction_matrix)
 
-    xixj_interactions <- inter_mat[xi_row,] # Vector of which xj persons that xi has interacted with
-    #cat("xixj_interactions: ", xixj_interactions, "\n")
+  for (xi_row in 1:nrow(interaction_matrix)) { # Iterate through each row item of the interaction matrix for person xi
 
-    infected_xj <- initial_inf_stat_vec * xixj_interactions # Vector of which xj persons in the xixj_interactions vector are infected, determined via w/ generate_inf_vec
-    #cat("infected_xj: ", infected_xj, "\n")
+    xixj_interactions <- interaction_matrix[xi_row,] # Vector of which xj persons that xi has interacted with, segmented from interaction_matrix
+    cat("xixj_interactions: ", xixj_interactions, "\n")
 
-    prob_transmission <- infected_xj * inf_prob_vec # Among the infected xj person(s) in infected_xj, determine their probability of transmitting infection to xi (pi * pj)
-    #cat("prob_transmission: ", prob_transmission, "\n")
+    infected_xj <- xixj_interactions * initial_inf_stat_vec # Vector of xj persons infected in the xixj_interactions vector, determined w/ initial_inf_stat_vec
+    cat("infected_xj: ", infected_xj, "\n")
+
+    prob_transmission <- (infected_xj * inf_prob_vec) * inf_prob_vec[xi_row] # Calculate probability of transmitting infection to xi from infected xj persons interacted w/ (pi * pj)
+    cat("prob_transmission: ", prob_transmission, "\n")
 
     filtered_prob_transmission <- prob_transmission[prob_transmission != 0] # Filter probability of transmission vector into only xj-infected interactions with xi
     #cat("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
 
-    #deter_inf_transmission <- sapply(prob_transmission, sample(c(1, 0), size=1, replace=TRUE, prob=c(prob_transmission, 1 - prob_transmission)))
-    deter_inf_transmission <- c()
-    for (enounter in filtered_prob_transmission) { # Iterate through elements of the probability of transmission vector with xj individual(s)
-      deter_transmission <- sample(c(1, 0), size=1, replace=TRUE, prob=c(enounter, 1 - enounter))
+    deter_inf_transmission <- sapply(filtered_prob_transmission, sample(c(1, 0), size=1, replace=TRUE, prob=c(filtered_prob_transmission, 1 - filtered_prob_no_transmission)))
+
+    #print(deter_inf_transmission)
+    #deter_inf_transmission <- c()
+    #for (enounter in filtered_prob_transmission) { # Iterate through elements of the probability of transmission vector with xj individual(s)
+      #deter_transmission <- sample(c(1, 0), size = 1, replace = TRUE, prob = c(enounter, 1 - enounter))
       #print(deter_transmission)
-      deter_inf_transmission <- c(deter_inf_transmission, deter_transmission)
-    }
+      #deter_inf_transmission <- c(deter_inf_transmission, deter_transmission)
+    #}
 
     #cat("deter_transmission_vec: ", deter_inf_transmission, "\n")
 
@@ -96,9 +100,3 @@ test_iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, intera
    }
   return(total_inf_vec)
 }
-
-
-
-
-#xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix)
-#test_iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, 20)
