@@ -51,13 +51,13 @@ xi_to_xj_interactions <- function (initial_inf_stat_vec, inf_prob_vec, interacti
     #print (interaction_matrix)
 
     xixj_interactions <- inter_mat[xi_row,] # Vector of which xj persons that xi has interacted with
-    cat("xixj_interactions: ", xixj_interactions, "\n")
+    #cat("xixj_interactions: ", xixj_interactions, "\n")
 
     infected_xj <- initial_inf_stat_vec * xixj_interactions # Vector of which xj persons in the xixj_interactions vector are infected, determined via w/ generate_inf_vec
-    cat("infected_xj: ", infected_xj, "\n")
+    #cat("infected_xj: ", infected_xj, "\n")
 
     prob_transmission <- infected_xj * inf_prob_vec # Among the infected xj person(s) in infected_xj, determine their probability of transmitting infection to xi (pi * pj)
-    cat("prob_transmission: ", prob_transmission, "\n")
+    #cat("prob_transmission: ", prob_transmission, "\n")
 
     filtered_prob_transmission <- prob_transmission[prob_transmission != 0] # Filter probability of transmission vector into only xj-infected interactions with xi
     #at("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
@@ -70,22 +70,22 @@ xi_to_xj_interactions <- function (initial_inf_stat_vec, inf_prob_vec, interacti
       deter_inf_transmission <- c(deter_inf_transmission, deter_transmission)
     }
 
-    cat("deter_transmission_vec: ", deter_inf_transmission, "\n")
+    #cat("deter_transmission_vec: ", deter_inf_transmission, "\n")
 
     if (sum(deter_inf_transmission) != 0) {xi_inf_status <- 1} # If any of the infection values in determined transmission vector are not false, xi status = infected
     else {xi_inf_status <- 0}
     new_inf_stat_vec <- c(new_inf_stat_vec, xi_inf_status)
-    print (new_inf_stat_vec)
-    cat('\n')
+    #print (new_inf_stat_vec)
+
     #cat("xi_inf_status: ", xi_inf_status, "\n",'\n')
   }
   return(new_inf_stat_vec) # Return a vector inidcating the number of infected people (xi) after interaction analysis
 }
 
 
-initial_inf_stat_vec <- initial_inf_stat_vec(20, 3)
-inf_prob_vec <- inf_prob_vec(20)
-interaction_matrix <- interaction_matrix(20)
+#initial_inf_stat_vec <- initial_inf_stat_vec(20, 3)
+#inf_prob_vec <- inf_prob_vec(20)
+#interaction_matrix <- interaction_matrix(20)
 
 
 test_iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, num) {
@@ -124,5 +124,5 @@ test_iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, intera
 
 
 
-xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix)
+#xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix)
 #test_iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, 20)
