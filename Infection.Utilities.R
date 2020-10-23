@@ -103,22 +103,28 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interac
   print (storage[length(storage)])
   #print(sum(storage[tail(storage)]))
 
-
-
+  #last_storage_elmt <- unlist(storage[length(storage)]
 
   #total_inf_vec <- append(total_inf_vec, sum(storage))
   print(total_inf_vec)
-  #print(tail(storage), 1)
 
+  aa <- c(1,0,0,1,0)
+  bb <- c(0,1,1,1,0)
 
+  aa <- (aa + bb)[]
+  print(aa)
 
-  for (inf_scenario in 1:num + 1) {
+  for (inf_scenario in 1:num) {
+
     iterable_isv <- xi_to_xj_interactions(unlist(storage[length(storage)]), inf_prob_vec, inf_interaction_matrix)
+    #mapply()
+    ###storage[length(storage) + 1] <- unlist(storage[length(storage)]) + iterable_isv[iterable_isv != unlist(storage[length(storage)])] # Append updated infection status vector to storage list
+    print (iterable_isv)
+    total_inf_vec <- c(total_inf_vec, sum(iterable_isv))
 
+  }
+}
 
-    storage[length(storage) + 1] <- storage_ + jj[jj != storage[length(storage)]]
-
-    cat(inf_scenario, iterable_isv, '\n')
 #    storage[inf_scenario] <- list(iterable_isv)
     #jj <- xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
 
@@ -130,8 +136,7 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interac
   #}
 
   #return (total_inf_vec)
-  }
-}
+
     #  iterable_isv <- xi_to_xj_interactions(iterable_isv + storage[length(storage)], inf_prob_vec, inf_interaction_matrix)
     #  total_inf_vec <- c(total_inf_vec, total_inf_vec[length(total_inf_vec)] + sum(iterable_isv))
     #  cat(inf_scenario, " run", iterable_isv, '\n')
@@ -189,6 +194,7 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interac
   #if (length(total_inf_vec) != num + 1) {cat("weird.", "length: ", length(total_inf_vec), total_inf_vec)}
 
   #return(total_inf_vec)
+
 
 
 
