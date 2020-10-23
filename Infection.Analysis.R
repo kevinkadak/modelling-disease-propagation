@@ -2,26 +2,30 @@ args <- commandArgs(trailingOnly = TRUE) # Argument passed from the command line
 
 source('Infection.Utilities.R')
 
+print (args)
+
+args <- 'Masked'
+
+#if (is.character(args) == FALSE) { # Output text if the passed command argument is not a string
+#  stop("Error: Input is not a string")
+#} else if (args != 'Masked' or args != 'Unmasked') { # Output text if the passed argument is not an iteration of 'masked'/'unmasked'
+#  stop("Error: Input must be one of the defined strings: 'Masked', 'Unmasked'")}
 
 
-if (is.character(args) == FALSE) { # Output text if the passed command argument is not a string
-  stop("Error: Input is not a string")
-} else if (args != 'Masked' or args != 'Unmasked') { # Output text if the passed argument is not an iteration of 'masked'/'unmasked'
-  stop("Error: Input must be one of the defined strings: 'Masked', 'Unmasked'")}
-
-
-mask_frac_list(
+mask_frac_list <- list(
   Masked = c(0.15, 0.7, 0.15),
   Unmasked = c(0.15, 0.5, 0.35))
 
 if (args == "Masked") {
   mask_fraction <- mask_frac_list$Masked
 } else if (args == "Unasked") {
-  mask_fraction <- mask_frac_list$UnMasked
+  mask_fraction <- mask_frac_list$Unmasked
 }
 
-#  n_pop = 500
-#  num = 20
+
+n_pop = 500
+num = 20
+k = 1
 #  list$args
 #  initial_pop <- inital_inf_stat_vec(n, 1)
 #  vec.mask <- c(...)
@@ -35,11 +39,13 @@ if (args == "Masked") {
 
 
 ######
-initial_inf_stat_vec <- initial_inf_stat_vec(n = 500, k = 1) # 3. Create an initial population of 500, with 1 infection
-inf_prob_vec <- inf_prob_vec(n = 500 , mask_fraction) # 4. Create a vector of infection probabilities using the vectors in mask_frac_list
-interaction_matrix <- interaction_matrix(n = 500) # 5. Creates an interaction matrix for the population n
+initial_inf_stat_vec <- initial_inf_stat_vec(n_pop, k) # 3. Create an initial population of 500, with 1 infection
+inf_prob_vec <- inf_prob_vec(n_pop , mask_fraction) # 4. Create a vector of infection probabilities using the vectors in mask_frac_list
+interaction_matrix <- interaction_matrix(n_pop) # 5. Creates an interaction matrix for the population n
 
-test_iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, 20) # 6. Iterate through the xixj iterations 20 times and calcualte # of infected
+xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix)
+
+#test_iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, num) # 6. Iterate through the xixj iterations 20 times and calcualte # of infected
 ######
 
 
