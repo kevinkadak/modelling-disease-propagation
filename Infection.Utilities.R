@@ -44,6 +44,7 @@ interaction_matrix <- function(n) {
 xi_to_xj_interactions <- function (initial_inf_stat_vec, inf_prob_vec, interaction_matrix) {
   new_inf_stat_vec <- c()
   inter_mat <- interaction_matrix
+  inf_prob_vec <- inf_prob_vec
 
   for (xi_row in 1:nrow(inter_mat)) { # Iterate through each row item of the interaction matrix for person xi
     #print (initial_inf_stat_vec)
@@ -60,7 +61,7 @@ xi_to_xj_interactions <- function (initial_inf_stat_vec, inf_prob_vec, interacti
     #cat("prob_transmission: ", prob_transmission, "\n")
 
     filtered_prob_transmission <- prob_transmission[prob_transmission != 0] # Filter probability of transmission vector into only xj-infected interactions with xi
-    #at("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
+    #cat("filtered_prob_transmission: ", filtered_prob_transmission, "\n")
 
     #deter_inf_transmission <- sapply(prob_transmission, sample(c(1, 0), size=1, replace=TRUE, prob=c(prob_transmission, 1 - prob_transmission)))
     deter_inf_transmission <- c()
@@ -82,41 +83,16 @@ xi_to_xj_interactions <- function (initial_inf_stat_vec, inf_prob_vec, interacti
   return(new_inf_stat_vec) # Return a vector inidcating the number of infected people (xi) after interaction analysis
 }
 
-
-#initial_inf_stat_vec <- initial_inf_stat_vec(20, 3)
-#inf_prob_vec <- inf_prob_vec(20)
-#interaction_matrix <- interaction_matrix(20)
-
-
 test_iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, num) {
 
-  updated_inf_stat_vec <- list()
-  total_inf_vec <- c()
+  updated_inf_stat_vec <- c(initial_inf_stat_vec) # Initialize the first updated vector item (which will be replaced) w/ initial_inf_stat_vec output
+  total_inf_vec <- c(sum(updated_inf_stat_vec)) # Initialize total infection count as the sum of the initial_inf_stat_vec output
 
-  updated_inf_stat_vec[[1]] <- initial_inf_stat_vec # first updated infection status vector item
-  total_inf_vec <- c(total_inf_vec, sum(updated_inf_stat_vec[[1]])) # first total # of infected item
+  for (iteration in 2:(num+1)) {
+    updated_inf_stat_vec <- xi_to_xj_interactions(updated_inf_stat_vec, inf_prob_vec, interaction_matrix)
 
-  print (updated_inf_stat_vec)
-
-  #cat('total_inf_vec', total_inf_vec[[1]], '\n')
-
-  for (i in 2:(num+1)) {
-    #print (i)
-    #print(updated_inf_stat_vec[[i - 1]])
-    updated_inf_stat_vec[[i]] <- xi_to_xj_interactions(updated_inf_stat_vec[[i - 1]], inf_prob_vec, interaction_matrix)
-
-    print(updated_inf_stat_vec[[i]])
-
-
-    #print(sum(updated_inf_stat_vec[[i - 1]]))
-    total_inf_vec <- c(total_inf_vec, sum(updated_inf_stat_vec[[i - 1]]) + total_inf_vec[[i - 1]])
-
-
-
-    #total_inf_vec[[i]] <- sum(updated_inf_stat_vec[[i]]) + total_inf_vec[[i - 1]] # sum the number of infected people and save it
-    #print(total_inf_vec[[i]])
-    #updated_inf_stat_vec[[length(updated_inf_stat_vec)]] <- gg # save the new infection status vector to be used in the next loop
-
+    print(updated_inf_stat_vec)
+    total_inf_vec <- c(total_inf_vec, sum(updated_inf_stat_vec))
    }
   return(total_inf_vec)
 }

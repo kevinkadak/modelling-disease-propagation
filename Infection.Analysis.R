@@ -4,7 +4,6 @@ source('Infection.Utilities.R')
 
 print (args)
 
-#args <- 'Masked'
 
 #if (is.character(args) == FALSE) { # Output text if the passed command argument is not a string
 #  stop("Error: Input is not a string")
@@ -32,6 +31,8 @@ k = 1
 initial_inf_stat_vec <- initial_inf_stat_vec(n_pop, k) # 3. Create an initial population of 500, with 1 infection
 inf_prob_vec <- inf_prob_vec(n_pop, mask_fraction) # 4. Create a vector of infection probabilities using the vectors in mask_frac_list
 interaction_matrix <- interaction_matrix(n_pop) # 5. Creates an interaction matrix for the population n
+
+#xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix)
 
 test_iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, num) # 6. Iterate through the xixj iterations 20 times and calcualte # of infected
 ######
