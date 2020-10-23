@@ -88,6 +88,21 @@ inf_prob_vec <- inf_prob_vec(25)
 inf_interaction_matrix <- interaction_matrix(25)
 
 
+test_iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, num) {
+   # Initialize an empty vector to contain each iteration of infectious status vector (both initial and updated)
+  total_inf_vec <- c() # Initialize an empty vector to contain the total number of infected people
+
+  first_run <- initial_inf_stat_vec
+
+  for (i in 1:num) {
+    gg <- (xi_to_xj_interactions(first_run, inf_prob_vec, inf_interaction_matrix))
+    print(gg)
+    total_inf_vec <- c(total_inf_vec, sum(gg))
+
+  }
+  print(total_inf_vec)
+}
+
 iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, num) { # 1e takes the initial vector, but will use the updated vector as it iterates
   storage <- list() # Initialize an empty vector to contain each iteration of infectious status vector (both initial and updated)
   total_inf_vec <- c() # Initialize an empty vector to contain the total number of infected people
@@ -101,28 +116,35 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interac
 
   total_inf_vec <- c(total_inf_vec, sum(first_run))
   print (storage[length(storage)])
-  #print(sum(storage[tail(storage)]))
+  print (tail(storage))
 
   #last_storage_elmt <- unlist(storage[length(storage)]
 
   #total_inf_vec <- append(total_inf_vec, sum(storage))
   print(total_inf_vec)
 
-  aa <- c(1,0,0,1,0)
-  bb <- c(0,1,1,1,0)
 
-  aa <- (aa + bb)[]
-  print(aa)
+
+  #aa <- c(1,0,0,1,0)
+  #bb <- c(0,1,1,1,0)
+  #aa <- (aa | bb)
+  #wow <- mapply(max, aa, bb)
+  #print(wow)
+
+
 
   for (inf_scenario in 1:num) {
 
-    iterable_isv <- xi_to_xj_interactions(unlist(storage[length(storage)]), inf_prob_vec, inf_interaction_matrix)
-    #mapply()
+    iterable_isv <- xi_to_xj_interactions(unlist(tail(storage)), inf_prob_vec, inf_interaction_matrix)
+    storage[length(storage) + 1] <- mapply(max, storage[length(storage)], iterable_isv)
+    #print (storage[length(storage)])
     ###storage[length(storage) + 1] <- unlist(storage[length(storage)]) + iterable_isv[iterable_isv != unlist(storage[length(storage)])] # Append updated infection status vector to storage list
-    print (iterable_isv)
+    #print (iterable_isv)
     total_inf_vec <- c(total_inf_vec, sum(iterable_isv))
 
+
   }
+  print(total_inf_vec)
 }
 
 #    storage[inf_scenario] <- list(iterable_isv)
@@ -201,4 +223,4 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, inf_interac
 
 
 #xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix)
-iterate_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, 20)
+test_iterate_interactions(initial_inf_stat_vec, inf_prob_vec, inf_interaction_matrix, 20)
