@@ -1,3 +1,6 @@
+#Infection.Utilities.R
+#Kevin Kadak (1007522888)
+
 source('Infection.Utilities.R') # Import Infection.Utilities.R functions
 
 # Bash/terminal data & defensive guards
@@ -35,7 +38,7 @@ if (inf_param_list$n_pop < 1) {
 
 
 # Output statements & function calls
-cat("Using the", unlist(args), "proprtions vector.\n")
+cat("Using the", tolower(unlist(args)), "proprtions vector.\n")
 cat("The number of infected people, after", inf_param_list$num, "iterations, is: \n")
 
 initial_inf_stat_vec <- initial_inf_stat_vec(inf_param_list$n_pop, inf_param_list$k) # Create initial population of n, with k infection(s)
@@ -45,18 +48,30 @@ interaction_matrix <- interaction_matrix(inf_param_list$n_pop) # Create interact
 iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, inf_param_list$num) # Iterate through xixj iteractions and, num times, calcualte # of infected
 
 
+## Insights on Resulting Values ##
+##################################
 
-#, such that if number of infections were plotted on a graph, with y representing the number of infections and x representing iterations, it would form a normal distrution bell curve.
-# The key difference here is that the spikes in infection cases is sharper in the unmasked situation as the same amount of interaction leads leads to cases more suddenly
-
-#This is a particularily important demonstration of why social distancing is of utmost importance currently.  Even if every person was preordained to eventually be COVID-19 positive, the number of results deaths and severity of conseqeuntial side effects would be far greater were the medical system too overwhelmed to properly treat everyone in a short period.
-
-
-
-# The data points increas sharpley, then plateau as the number of available hosts (people) to infect become less plentifiul as most have already been previously infected
-
-#question: our initial probability vector randomly samples between 1 and 0, which would usally lead to half the values being 1.
-  #in the examples, however,
-
-
-# What do you mean by don't chance the infection status vector from within the function
+# Similarities:
+# Both conditions ("Masked"/"Unmasked") produced roughly the same number of infected persons at the end of num iterations, demonstrating that mask wearing
+# does not affect final volumetric infection rates without intervention.  Iterations points showed an initially-small increase, followed by a more
+# significant increase before plateauing and decreasing in the number of new infections to follow.
+#
+# Differences:
+# The key difference between the model conditions is the quadratic measure of infection rates.  That is, how dramatically infection rates between a previous
+# and given iteration of the model increases or decreases.  In the Unmasked condition, interaction is comparatively more likely to result in infection,
+# meaning the number of people infected occurs quickly while there is a large sample through which to spread, then just as quickly slows as the number of
+# uninfected 'hosts' dwindles.  This differs from the Masked condition, which demonstrates a more gradual spread of infection, resulting in less of a
+# spike in cases.
+#
+# If number of infections for both conditions were plotted on a graph, with x representing iterations and y representing the number of infections per, it
+# would form a normal distrution bell curve. The kurtosis would be comparatively smaller in the Masked condition, though it would show a visually wider
+# spread of data.
+#
+# This is a particularily important demonstration of why social distancing is currently of utmost importance.  Even if every person was bound to
+# eventually become COVID-19 positive, the number of results deaths and severity of conseqeuntial side effects would be far greater were the medical
+# system too overwhelmed to properly treat everyone in a short period.
+#
+# Model changes:
+# A sensible, yet not overly complex implemention for the model would be to account for 'removal', either from infected individuals recovering over a
+# period of time (which could easily be guaged as a measure of num iteration) or deaths, in which case xi is removed, perhaps triggering after some number
+# of iterations without recovery.
