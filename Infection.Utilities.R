@@ -6,9 +6,9 @@ initial_inf_stat_vec <- function(n, k) { # n is the size of the population; k is
   n <- as.integer(n) # Length of vector
   k <- as.integer(k) # Number of infected people within total vector set
 
-  total_pop <- as.numeric(!as.logical(seq(1, n))) # Creates a vector from 1 to n, inversly converts values > 0 as TRUE, then interprets and converts booelan values numerically (either 0 or 1)
+  total_pop <- as.numeric(!as.logical(seq(1, n))) # Vector from 1 to n, inversly converts values > 0 as TRUE, interprets & converts bool values numerically (either 0 or 1)
   inf_sample <- sample(n, k, replace = FALSE) # Generate an infected sample of size k based.  Only generate unique values up to size n
-  inf_status_vec <- replace(total_pop, inf_sample, as.numeric(as.logical(inf_sample))) # Within the total population, replace values of 0 at the indecies defined by inf_sample with values of 1
+  inf_status_vec <- replace(total_pop, inf_sample, as.numeric(as.logical(inf_sample))) # In n, replace 0 values at indecies defined by inf_sample with values of 1
 
   return(inf_status_vec)
 }
@@ -17,7 +17,7 @@ initial_inf_stat_vec <- function(n, k) { # n is the size of the population; k is
 inf_prob_vec <- function(n, mask_fraction = c(1/3, 1/3, 1/3)) {
   n <- as.integer(n)
   if (1 - sum(mask_fraction) > 1e-10 ) {
-    stop("Error: Sum of mask fraction vector must total to equal 1.") # If the sum of the fractions in the vector does not equal 1 (ie. 100%), output error
+    stop("Error: Sum of mask fraction vector must total to equal 1.") # If sum of fractions in vector != 1 (ie. 100%), output error
   }
 
   mask_prob_list <- list(
@@ -99,8 +99,6 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, interaction
   updated_inf_stat_vec <- c(initial_inf_stat_vec) # Initialize the first updated vector item (which will be replaced) w/ initial_inf_stat_vec output
   total_inf_vec <- c(sum(updated_inf_stat_vec)) # Initialize total infection count as the sum of the initial_inf_stat_vec output
 
-  print(updated_inf_stat_vec)
-  print(total_inf_vec)
 
   for (iteration in 2:(num+1)) { # Iterate from 2 to num
 
@@ -108,7 +106,7 @@ iterate_interactions <- function(initial_inf_stat_vec, inf_prob_vec, interaction
     updated_inf_stat_vec <- xi_to_xj_interactions(updated_inf_stat_vec, inf_prob_vec, interaction_matrix)
 
     total_inf_vec <- c(total_inf_vec, sum(updated_inf_stat_vec)) # For each loop, update the total # infected as the sum of current infected status vec
-    print(total_inf_vec)
+
    }
   return(total_inf_vec)
 }

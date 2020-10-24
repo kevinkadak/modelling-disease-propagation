@@ -1,6 +1,7 @@
-args <- commandArgs(trailingOnly = TRUE[1]) # Argument passed from the command line, will be used to indicate masked status
+source('Infection.Utilities.R') # Import Infection.Utilities.R functions
 
-source('Infection.Utilities.R')
+# Bash/terminal data & defensive guards
+args <- commandArgs(trailingOnly = TRUE[1]) # Argument passed from the command line, will be used to indicate masked status
 
 if (is.character(args) == FALSE) { # Output text if the passed command argument is not a string
   stop("Error: Input is not a string")
@@ -8,6 +9,7 @@ if (is.character(args) == FALSE) { # Output text if the passed command argument 
   stop("Error: Input must be one of the defined strings: 'Masked', 'Unmasked'") }
 
 
+# Mask data & defensive guards
 mask_frac_list <- list(
   Masked = c(0.15, 0.7, 0.15),
   Unmasked = c(0.15, 0.5, 0.35))
@@ -18,29 +20,36 @@ if (args == "Masked") {
   mask_fraction <- mask_frac_list$Unmasked
 }
 
+
+# Infection parameter data & defensive guards
 inf_param_list <- list(
   n_pop = 500,
   num = 20,
   k = 1)
 
-#if (inf_param_list$n_pop < 1) {stop("Error: Population (n_pop) must be greater than or equal to 1")
-#} else if (num < 1) {stop("Error: # of interaction iterations (num) must be greater than or equal to 1")
-#} else if (k < 1) {stop("Error: # of infected persons (k) must be greater than or equal to 1"}
+if (inf_param_list$n_pop < 1) {
+  stop("Error: Population (n_pop) must be greater than or equal to 1")
+} else if (inf_param_list$num < 1) {
+  stop("Error: # of interaction iterations (num) must be greater than or equal to 1")
+} else if (inf_param_list$k < 1) {stop("Error: # of infected persons (k) must be greater than or equal to 1")}
+
+
+# Output statements & function calls
+cat("Using the", unlist(args), "proprtions vector.\n")
+cat("The number of infected people, after", inf_param_list$num, "iterations, is: \n")
+
+initial_inf_stat_vec <- initial_inf_stat_vec(inf_param_list$n_pop, inf_param_list$k) # Create initial population of n, with k infection(s)
+inf_prob_vec <- inf_prob_vec(inf_param_list$n_pop, mask_fraction) # Create vector of infection probs using mask_frac_list
+interaction_matrix <- interaction_matrix(inf_param_list$n_pop) # Create interaction matrix of the population n
+
+iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, inf_param_list$num) # Iterate through xixj iteractions and, num times, calcualte # of infected
 
 
 
-######
-initial_inf_stat_vec <- initial_inf_stat_vec(inf_param_list$n_pop, inf_param_list$k) # 3. Create an initial population of 500, with 1 infection
-inf_prob_vec <- inf_prob_vec(inf_param_list$n_pop, mask_fraction) # 4. Create a vector of infection probabilities using the vectors in mask_frac_list
-interaction_matrix <- interaction_matrix(inf_param_list$n_pop) # 5. Creates an interaction matrix for the population n
+#, such that if number of infections were plotted on a graph, with y representing the number of infections and x representing iterations, it would form a normal distrution bell curve.
+# The key difference here is that the spikes in infection cases is sharper in the unmasked situation as the same amount of interaction leads leads to cases more suddenly
 
-#xi_to_xj_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix)
-
-iterate_interactions(initial_inf_stat_vec, inf_prob_vec, interaction_matrix, inf_param_list$num) # 6. Iterate through the xixj iterations 20 times and calcualte # of infected
-######
-
-
-
+#This is a particularily important demonstration of why social distancing is of utmost importance currently.  Even if every person was preordained to eventually be COVID-19 positive, the number of results deaths and severity of conseqeuntial side effects would be far greater were the medical system too overwhelmed to properly treat everyone in a short period.
 
 
 
