@@ -6,10 +6,13 @@ source('Infection.Utilities.R') # Import Infection.Utilities.R functions
 # Bash/terminal data & defensive guards
 args <- commandArgs(trailingOnly = TRUE[1]) # Argument passed from the command line, will be used to indicate masked status
 
-if (is.character(args) == FALSE) { # Output text if the passed command argument is not a string
-  stop("Error: Input is not a string")
-} else if ((args != "Masked" || args != "Unmasked") == FALSE) { # Output text if the passed argument is not an iteration of 'masked'/'unmasked'
-  stop("Error: Input must be one of the defined strings: 'Masked', 'Unmasked'") }
+if (length(args) == 0) {
+  stop("No condition passed.  Input Masked or Unmasked.")
+} else if (is.character(args) == FALSE) { # Output text if the passed command argument is not a string
+  stop("Input is not a string")
+} else if ((args != "Masked" && args != "Unmasked") == TRUE) { # Output text if the passed argument is not an iteration of 'masked'/'unmasked'
+  stop("Input must be one of the defined strings: 'Masked', 'Unmasked'")
+}
 
 
 # Mask data & defensive guards

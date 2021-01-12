@@ -1,0 +1,173 @@
+commit a90f9245947b0814b16b655e0b9d08a235f41c3d
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 22:54:31 2020 -0400
+
+    Everything finished and functioning.  Final commit.
+
+commit 6382651f83ad55de3ecb715ffad44622175f7c1d
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 22:02:15 2020 -0400
+
+    Driver script cleaned up and performing as expected.  Moving onto utilities script.
+
+commit 5b156bd25d5ab3d3bffb278d8916fc55c70862f0
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 16:35:53 2020 -0400
+
+    Fixed driver script args issue; correctly-inputted command line txt now is properly run through the script.  Contuning with 1d fixing.
+
+commit 427b27b4a52ff20c03f25cca6ccf6da6ed779f55
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 15:24:22 2020 -0400
+
+    Simplified 1d code, working on coverting 2nd 1d for loop into sapply.  Also trying to find where my 1d fn apparently recalculates whether a person gets infected.
+
+commit a20dc14b2c358599fe1e1875231ec9f4dff891d3
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 13:49:46 2020 -0400
+
+    Massive developments in syntax simplicity and semi-correct outputted values for 1e after email back.  Now troubleshooting pipj probability bug in 1d.
+
+commit 522a66ce9c5167e1958abea5917e5487cd94bc27
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 03:48:55 2020 -0400
+
+    Minor improvement, script is beginning to output something that roughly looks like the intended output.  However, it's exceeding the 500 person limit defined in the driver script after 4 iterations, though it is outputting only 21 total infected iteration items, which is good.
+
+commit bd2931bf5715d45a8cb2cf070fd1d3846333bf6e
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 03:32:15 2020 -0400
+
+    Trying to find whatever bug is making things refuse to work still.  Commiting for development sake, though little has changed in the functionality of the code.  Continuing to troubleshoot
+
+commit eba3283d0f5195758547086f8e7e931eac6775c8
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 23 01:37:59 2020 -0400
+
+    Little to report in explicit development.  Continuing to troubleshoot.  Have constructed more of Infection.Analysis.  Continuing with both.
+
+commit c6a18cdf55c7351fdb689dc606503e488f5a7766
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Thu Oct 22 22:38:54 2020 -0400
+
+    Reapproaching 1e after email response.  Mid-way through recreating the fn simpler.
+
+commit 4e60293a0d00bc44302370eacd2f8dff325f9538
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Thu Oct 22 21:31:55 2020 -0400
+
+    Little development with 1e.  Began constructing Infection.Analysis.R for question 2.  Working to properly source mask fraction vectors for q1 fns.
+
+commit 6ecbec4d4619d5954b562ce7379171cd34eec1a8
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Thu Oct 22 19:23:24 2020 -0400
+
+    Continueing with 1e.  In the middle of transforming the updated infection status matrix by combining it with the one that fn 1d sources to generate it.
+
+commit d95239611e8e0d5103ae353035a521d128c5dfbb
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Thu Oct 22 16:39:40 2020 -0400
+
+    Deep into trying to properly combine the last updated_inf_stat_vec w/ the initial_inf_stat_vec using vectorization.  At the respective idecies where their values are not equal, I'm trying to get them to add together (ie. 1 +0) in order to produce a new updated_inf_stat_vec that retains the results of the previous run.
+
+commit 5697ad72ee0662005c92b3cf7d97aaff3ac2f916
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Thu Oct 22 13:20:49 2020 -0400
+
+    Simple development in cleaning up/calrifying variable names.  Continuing to work on 1e.
+
+commit 5fcc5d0c19aee4fc39956a294d6ad5a2eb154068
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Thu Oct 22 12:52:35 2020 -0400
+
+    Have begun constructing driver script.  Currently troubleshooting the correct way to iterate the 1e 'updated' infection-status vector following the initial call using the initial_inf_stat_vec (1a fn).  More comments have been added as progress continues.
+
+commit cd58898cae6bee34cf000b5b83954cb6cc0f4fa9
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Thu Oct 22 00:40:28 2020 -0400
+
+    Part way through 1e; working on iterating xi_to_xj_interaction with the updated infection status vector it produces each time.  Currently finished simple first iteration it performs w/ the initial infection status vector.
+
+commit 3d98ae5143f54b384627df1d7f7f5f6fb2215804
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Wed Oct 21 23:48:32 2020 -0400
+
+    Aside from sapply functionality, 1d is done.  Will return to sapply after other tasks.  Now delving into 1e fns.
+
+commit 9101da26bb13d9c4a9d6994f806e25f66f2793cd
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Wed Oct 21 22:41:56 2020 -0400
+
+    Finished draft of 1d.  Awaiting response about questions from instructors.  Now moving on to fn 1e.
+
+commit 68bb72936200c1c5934e57ce850a2c13ef9da7f0
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Wed Oct 21 22:30:36 2020 -0400
+
+    Believe probability of transmitting infection is now coded properly; generate_prob_vec() ** 2.
+
+commit 18a376489520e35290a7f9479988a64c15ba02cf
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Wed Oct 21 21:46:13 2020 -0400
+
+    Further into 1d development now.  Trying to back track and see if there's a way to make things cleaner by implementing apply() to the filtered_prob_transmission vector.  Stil working on the functionality of the the initial inf status vector to make sure pi*pj is being calculated.  Added further commenting.
+
+commit 5480dbaf263f8d0ffd41a9549ebe9ad3532c6020
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Wed Oct 21 19:32:20 2020 -0400
+
+    1d item 4 appear to be working properly now and can successfully generate an a chance instance of infection via interactions with xj individuals.  Finalizing 1d and completing items 5, 6 and 7 now.
+
+commit 97aa753bf146acf993eb8c6b2b99eb2158741117
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Wed Oct 21 02:40:55 2020 -0400
+
+    Finished implemeenting items 3 of 1d; can now properly calculate the % chance of becoming infected via the xj interactions with individual xi.  Now in the middle of item 4 to properly sample if person xi actually becomes infected by any of the interactions with persons xj.
+
+commit f4cc43a3277b63ca0d22112f5f546316b16c7472
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Wed Oct 21 01:37:11 2020 -0400
+
+    Successfully implemented first two items of 1d; can iteratively determine if interaction between persons took place and, of those interactions, which individuals (xj) were already infected.  Now moving on to item three of 1d.
+
+commit cde8a4ace4761a73b751828f2fab0958c35334c8
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Mon Oct 19 19:16:43 2020 -0400
+
+    1c matrix function working correctly; values popualte randomly between 1 and 0, diagonals = 0, and matrix is transposed.  Also added comments into all fns so far.  Now moving on to item 1d function.
+
+commit f190678835d6ea11d881f9e8e59265bfb1a07571
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Mon Oct 19 02:53:05 2020 -0400
+
+    Working on part 1c.  Successfully generated matrix w/ 0 diagonal values.  However, generation isn't yet random - working on that now.
+
+commit 7ccefaccdbcafec9af09a18fa854baa2275b22aa
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Mon Oct 19 01:36:36 2020 -0400
+
+    Part 1b now successfully samples from the prob_list for a vector size of n.  Waiting for reply on Scinet forums to confirm function is working properly.
+
+commit 12048327ae41f6bf9768ded17e42dbceaa1951f1
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Sat Oct 17 22:59:43 2020 -0400
+
+    Mid-way through constructing 1b fn.  Beginning on trying to convert n vector into a distribution of prob_list items, divided based on the mask_fraction argument.
+
+commit 471c52c455fd28db459a87af6c112cb2980b176e
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Sat Oct 17 20:45:26 2020 -0400
+
+    Successfully have part 1a fn working; correctly outputs vector of size n, with k number of positively-infected individuals.  Moving on to 1b now.
+
+commit 7529b5dad186d4b912c4d384769423d48e0cfc9f
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Sat Oct 17 20:03:55 2020 -0400
+
+    First instance of n & k working properly.  Now trying to get the vector of length n to correctly sample k infected people.
+
+commit 41419fe073b2e021911295aea4d2d673b9c6decb
+Author: kevinkadak <49459455+kevinkadak@users.noreply.github.com>
+Date:   Fri Oct 16 01:51:34 2020 -0400
+
+    First repo commit.  No content, only blank utilities file.
